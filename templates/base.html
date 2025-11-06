@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}База знаний{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <header>
+        <h1>База знаний кружка</h1>
+        <nav>
+            <a href="{{ url_for('index') }}">Главная</a>
+            {% if session.get('logged_in') %}
+            <a href="{{ url_for('logout') }}">Выйти</a>
+            <a href="{{ url_for('new_article') }}">Новая статья</a>
+            {% else %}
+            <a href="{{ url_for('login') }}">Войти</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    {% for message in get_flashed_messages() %}
+    <div class="flash">{{ message }}</div>
+    {% endfor %}
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+</body>
+
+</html>
