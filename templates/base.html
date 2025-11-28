@@ -18,7 +18,6 @@
 
   <header class="topbar container">
     <div class="brand">
-      <div class="badge badge-red">KB</div>
       <div class="badge badge-dark">∞</div>
       <div class="brand-meta">
         <p class="brand-name">База знаний</p>
@@ -26,10 +25,9 @@
       </div>
     </div>
     <nav class="main-nav">
-      <a href="{{ url_for('index') }}#articles">Статьи</a>
-      <a href="{{ url_for('index') }}#about">О проекте</a>
+      <a href="{{ url_for('articles_feed') }}">Статьи</a>
+      <a href="{{ url_for('about') }}">О проекте</a>
       <a href="{{ url_for('index') }}#schedule">Расписание</a>
-      <a href="{{ url_for('index') }}#actions">Действия</a>
       <a href="{{ url_for('contacts') }}">Контакты</a>
     </nav>
     <div class="nav-actions">

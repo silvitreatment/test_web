@@ -4,11 +4,11 @@
   <section class="hero">
     <div class="hero-text">
       <p class="eyebrow">Практика, знания, движение</p>
-      <h1>Как попасть в базу знаний</h1>
+      <h1>Пополняй базу знаний кружка</h1>
       <p class="lead">Собрали опыт кружка, статьи и разборы задач. Добавляйте свои материалы и вдохновляйте других.</p>
       <div class="hero-actions">
-        <a class="pill primary" href="#articles">Смотреть статьи</a>
-        {% if session.get('logged_in') %}
+        <a class="pill primary" href="{{ url_for('articles_feed') }}">Смотреть статьи</a>
+        {% if current_user %}
           <a class="pill outline" href="{{ url_for('new_article') }}">Добавить материал</a>
         {% else %}
           <a class="pill outline" href="{{ url_for('login') }}">Войти и добавить</a>

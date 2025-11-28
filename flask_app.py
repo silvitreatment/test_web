@@ -170,6 +170,21 @@ def index():
     return render_template('index.html', articles=articles, pending_articles=pending)
 
 
+@app.route('/articles')
+def articles_feed():
+    query = Article.query.order_by(Article.id.desc())
+    if not g.current_user or g.current_user.role == 'user':
+        articles = query.filter_by(status='published').all()
+    else:
+        articles = query.all()
+    return render_template('articles_feed.html', articles=articles)
+
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+
 @app.route('/contacts')
 def contacts():
     contacts_data = [

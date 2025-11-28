@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Статьи - База знаний{% endblock %}
+{% block content %}
+  <section class="section-heading">
+    <h2>Лента статей</h2>
+    <p>Листайте материалы: длинные тексты сжимаются, нажмите «Читать дальше», чтобы открыть полностью.</p>
+  </section>
+
+  {% if articles %}
+    <div class="card-column feed-list">
+      {% for article in articles %}
+        <article class="card article-card">
+          <div class="card-head">
+            <h4>{{ article.title }}</h4>
+            <div class="status-pills">
+              <span class="status-badge {{ 'published' if article.status == 'published' else 'pending' }}">{{ article.status }}</span>
+              {% if article.author_name %}<span class="status-badge muted">{{ article.author_name }}</span>{% endif %}
+            </div>
+          </div>
+          <p class="card-text clamp">{{ article.content }}</p>
+          <div class="card-actions">
+            <a class="pill primary" href="{{ url_for('show_article', article_id=article.id) }}">Читать дальше</a>
+            {% if current_user and current_user.role in ['moderator','admin'] %}
+              <a class="pill outline" href="{{ url_for('edit_article', article_id=article.id) }}">Редактировать</a>
+            {% endif %}
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="empty-state">
+      <p>Статей пока нет.</p>
+      {% if current_user %}
+        <a class="pill primary" href="{{ url_for('new_article') }}">Добавить статью</a>
+      {% else %}
+        <a class="pill primary" href="{{ url_for('login') }}">Войти и добавить</a>
+      {% endif %}
+    </div>
+  {% endif %}
+{% endblock %}
