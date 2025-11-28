@@ -2,28 +2,50 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}База знаний{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Onest:wght@500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body>
-  <header>
-    <h1>База знаний кружка</h1>
-    <nav>
-      <a href="{{ url_for('index') }}">Главная</a>
-      {% if session.get('logged_in') %}
-        <a href="{{ url_for('logout') }}">Выйти</a>
-        <a href="{{ url_for('new_article') }}">Новая статья</a>
-      {% else %}
-        <a href="{{ url_for('login') }}">Войти</a>
-      {% endif %}
+<body class="{% if session.get('logged_in') %}is-auth{% endif %}">
+  <div class="bg-orbit">
+    <span class="blob blob-1"></span>
+    <span class="blob blob-2"></span>
+    <span class="blob blob-3"></span>
+  </div>
+
+  <header class="topbar container">
+    <div class="brand">
+      <div class="badge badge-red">KB</div>
+      <div class="badge badge-dark">∞</div>
+      <div class="brand-meta">
+        <p class="brand-name">База знаний</p>
+        <p class="brand-sub">Кружок СПбГУ</p>
+      </div>
+    </div>
+    <nav class="main-nav">
+      <a href="{{ url_for('index') }}#articles">Статьи</a>
+      <a href="{{ url_for('index') }}#about">О проекте</a>
+      <a href="{{ url_for('index') }}#actions">Действия</a>
+      <a href="{{ url_for('index') }}#contacts">Контакты</a>
     </nav>
+    <div class="nav-actions">
+      {% if session.get('logged_in') %}
+        <a class="chip" href="{{ url_for('new_article') }}">Добавить статью</a>
+        <a class="pill dark" href="{{ url_for('logout') }}">Выйти</a>
+      {% else %}
+        <a class="pill dark" href="{{ url_for('login') }}">Войти</a>
+      {% endif %}
+    </div>
   </header>
 
-  {% for message in get_flashed_messages() %}
-    <div class="flash">{{ message }}</div>
-  {% endfor %}
+  <main class="page container">
+    {% for message in get_flashed_messages() %}
+      <div class="toast">{{ message }}</div>
+    {% endfor %}
 
-  <main>
     {% block content %}{% endblock %}
   </main>
 </body>

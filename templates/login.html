@@ -1,13 +1,25 @@
 {% extends "base.html" %}
 {% block title %}Вход{% endblock %}
 {% block content %}
-  <h2>Вход</h2>
-  {% if error %}<p class="error"><strong>Ошибка:</strong> {{ error }}</p>{% endif %}
-  <form action="{{ url_for('login') }}" method="post">
-    <p>Имя пользователя:<br>
-       <input type="text" name="username"></p>
-    <p>Пароль:<br>
-       <input type="password" name="password"></p>
-    <p><button type="submit">Войти</button></p>
-  </form>
+  <section class="form-wrap">
+    <div class="section-heading">
+      <h2>Войти в базу</h2>
+      <p>Чтобы редактировать и добавлять материалы, войдите под админ-аккаунтом.</p>
+    </div>
+    {% if error %}
+      <div class="toast error"><strong>Ошибка:</strong> {{ error }}</div>
+    {% endif %}
+    <form class="card form-card" action="{{ url_for('login') }}" method="post">
+      <label>Имя пользователя
+        <input type="text" name="username" placeholder="admin">
+      </label>
+      <label>Пароль
+        <input type="password" name="password" placeholder="••••••••">
+      </label>
+      <div class="card-actions">
+        <button class="pill primary" type="submit">Войти</button>
+        <a class="pill outline" href="{{ url_for('index') }}">Назад</a>
+      </div>
+    </form>
+  </section>
 {% endblock %}

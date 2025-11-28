@@ -1,16 +1,112 @@
 {% extends "base.html" %}
 {% block title %}Все статьи - База знаний{% endblock %}
 {% block content %}
-  <h2>Все статьи</h2>
-  {% if articles %}
-    <ul class="articles-list">
-      {% for article in articles %}
-        <li>
-          <a href="{{ url_for('show_article', article_id=article.id) }}">{{ article.title }}</a>
-        </li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p><em>В базе знаний пока нет материалов.</em></p>
-  {% endif %}
+  <section class="hero">
+    <div class="hero-text">
+      <p class="eyebrow">Практика, знания, движение</p>
+      <h1>Как попасть в базу знаний</h1>
+      <p class="lead">Собрали опыт кружка, статьи и разборы задач. Добавляйте свои материалы и вдохновляйте других.</p>
+      <div class="hero-actions">
+        <a class="pill primary" href="#articles">Смотреть статьи</a>
+        {% if session.get('logged_in') %}
+          <a class="pill outline" href="{{ url_for('new_article') }}">Добавить материал</a>
+        {% else %}
+          <a class="pill outline" href="{{ url_for('login') }}">Войти и добавить</a>
+        {% endif %}
+      </div>
+      <div class="hero-tags">
+        <span>Разборы задач</span>
+        <span>Конспекты лекций</span>
+        <span>Лайфхаки подготовки</span>
+      </div>
+    </div>
+    <div class="hero-card">
+      <p class="hero-label">Стажировка мышления</p>
+      <h3>Прыжок в глубину знаний</h3>
+      <p class="hero-card-text">В каждой статье — практический опыт, который помогает готовиться к олимпиадам и интервью.</p>
+      <div class="hero-badge">
+        <span>⚡</span>
+        <span>Вдохновляем делать больше</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="articles" class="articles-section">
+    <div class="section-heading">
+      <h2>Материалы кружка</h2>
+      <p>Свежие заметки, конспекты и полезные ссылки.</p>
+    </div>
+
+    {% if articles %}
+      {% set featured = articles[0] %}
+      <div class="cards-layout">
+        <article class="card feature-card">
+          <div class="card-head">
+            <span class="card-pill">Выделенное</span>
+            <a class="card-link" href="{{ url_for('show_article', article_id=featured.id) }}">Читать</a>
+          </div>
+          <h3>{{ featured.title }}</h3>
+          <p class="card-text">{{ featured.content[:220] ~ ('…' if featured.content|length > 220 else '') }}</p>
+          {% if session.get('logged_in') %}
+            <div class="card-actions">
+              <a href="{{ url_for('edit_article', article_id=featured.id) }}">Редактировать</a>
+            </div>
+          {% endif %}
+        </article>
+
+        <div class="card-column">
+          {% for article in articles[1:] %}
+            <article class="card article-card">
+              <div class="card-head">
+                <h4>{{ article.title }}</h4>
+                <a class="icon-btn" href="{{ url_for('show_article', article_id=article.id) }}">↗</a>
+              </div>
+              <p class="card-text">{{ article.content[:140] ~ ('…' if article.content|length > 140 else '') }}</p>
+              {% if session.get('logged_in') %}
+                <div class="card-actions">
+                  <a href="{{ url_for('edit_article', article_id=article.id) }}">Редактировать</a>
+                </div>
+              {% endif %}
+            </article>
+          {% endfor %}
+        </div>
+      </div>
+    {% else %}
+      <div class="empty-state">
+        <p>В базе знаний пока нет материалов.</p>
+        {% if session.get('logged_in') %}
+          <a class="pill primary" href="{{ url_for('new_article') }}">Создать первую статью</a>
+        {% else %}
+          <a class="pill primary" href="{{ url_for('login') }}">Войти и добавить</a>
+        {% endif %}
+      </div>
+    {% endif %}
+  </section>
+
+  <section id="about" class="info-section">
+    <div class="info-card">
+      <h3>О проекте</h3>
+      <p>Мы сохраняем опыт кружка в одном месте: разборы задач, методички и лайфхаки подготовки. Материалы обновляются со встреч участников.</p>
+    </div>
+    <div class="info-card">
+      <h3>Поделиться опытом</h3>
+      <p>Если у тебя есть идея или разбор — добавь статью или пришли в чат. Чем больше примеров, тем лучше мы готовимся.</p>
+    </div>
+  </section>
+
+  <section id="actions" class="cta-banner">
+    <div>
+      <p class="eyebrow">Давай создадим новое</p>
+      <h3>Хочу к вам</h3>
+    </div>
+    {% if session.get('logged_in') %}
+      <a class="pill primary" href="{{ url_for('new_article') }}">Добавить статью</a>
+    {% else %}
+      <a class="pill primary" href="{{ url_for('login') }}">Войти</a>
+    {% endif %}
+  </section>
+
+  <section id="contacts" class="footer-note">
+    <p>Задай вопрос в чате кружка или пиши на почту организаторам.</p>
+  </section>
 {% endblock %}

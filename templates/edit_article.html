@@ -1,12 +1,22 @@
 {% extends "base.html" %}
 {% block title %}Редактировать: {{ article.title }} - База знаний{% endblock %}
 {% block content %}
-  <h2>Редактирование статьи</h2>
-  <form action="{{ url_for('update_article', article_id=article.id) }}" method="post">
-    <p>Заголовок:<br>
-       <input type="text" name="title" value="{{ article.title }}" required></p>
-    <p>Содержание:<br>
-       <textarea name="content" rows="5" cols="40" required>{{ article.content }}</textarea></p>
-    <p><button type="submit">Обновить</button></p>
-  </form>
+  <section class="form-wrap">
+    <div class="section-heading">
+      <h2>Редактирование статьи</h2>
+      <p>Уточните формулировки, добавьте ссылки или примеры.</p>
+    </div>
+    <form class="card form-card" action="{{ url_for('update_article', article_id=article.id) }}" method="post">
+      <label>Заголовок
+        <input type="text" name="title" value="{{ article.title }}" required>
+      </label>
+      <label>Содержание
+        <textarea name="content" rows="6" required>{{ article.content }}</textarea>
+      </label>
+      <div class="card-actions">
+        <button class="pill primary" type="submit">Обновить</button>
+        <a class="pill outline" href="{{ url_for('show_article', article_id=article.id) }}">Отмена</a>
+      </div>
+    </form>
+  </section>
 {% endblock %}

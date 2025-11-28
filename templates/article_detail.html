@@ -2,18 +2,25 @@
 {% block title %}{{ article.title }} - База знаний{% endblock %}
 {% block content %}
   {% if article %}
-    <article>
+    <article class="card detail-card">
+      <div class="card-head">
+        <span class="card-pill">Статья</span>
+      </div>
       <h2>{{ article.title }}</h2>
-      <p>{{ article.content|safe }}</p>
+      <div class="article-body">{{ article.content|safe }}</div>
+      {% if session.get('logged_in') %}
+        <div class="card-actions">
+          <a class="pill outline" href="{{ url_for('edit_article', article_id=article.id) }}">Редактировать</a>
+          <form action="{{ url_for('delete_article', article_id=article.id) }}" method="post" onsubmit="return confirm('Удалить статью?');">
+            <button class="pill danger" type="submit">Удалить</button>
+          </form>
+        </div>
+      {% endif %}
     </article>
-    {% if session.get('logged_in') %}
-      <a href="{{ url_for('edit_article', article_id=article.id) }}">Редактировать</a>
-      <form action="{{ url_for('delete_article', article_id=article.id) }}" method="post" style="display:inline;">
-        <button type="submit" onclick="return confirm('Удалить статью?');">Удалить</button>
-      </form>
-    {% endif %}
   {% else %}
-    <h2>Статья не найдена</h2>
-    <p>Запрошенная статья не существует.</p>
+    <div class="empty-state">
+      <h2>Статья не найдена</h2>
+      <p>Запрошенная статья не существует.</p>
+    </div>
   {% endif %}
 {% endblock %}
