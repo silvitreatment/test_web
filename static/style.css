@@ -159,6 +159,14 @@ a { color: inherit; text-decoration: none; }
   align-items: center;
 }
 
+.role-pill {
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: rgba(0,0,0,0.06);
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
 .pill {
   border: none;
   outline: none;
@@ -351,6 +359,29 @@ a { color: inherit; text-decoration: none; }
   gap: 10px;
 }
 
+.status-pills {
+  display: inline-flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: rgba(0,0,0,0.06);
+}
+
+.status-badge.published { background: rgba(0, 199, 165, 0.18); color: #006b5a; }
+.status-badge.pending { background: rgba(255, 100, 51, 0.16); color: #a13812; }
+.status-badge.muted { color: var(--muted); }
+
 .card-pill {
   padding: 8px 12px;
   border-radius: 12px;
@@ -437,6 +468,150 @@ a { color: inherit; text-decoration: none; }
   text-align: center;
   color: var(--muted);
   margin-top: 16px;
+}
+
+.contacts-section {
+  margin: 40px 0 20px;
+}
+
+.people-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
+}
+
+.contact-card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px;
+  align-items: center;
+  padding: 18px;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+}
+
+.avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #ff9466, #ff6433);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  box-shadow: 0 14px 30px rgba(255,100,51,0.25);
+}
+
+.avatar.alt {
+  background: linear-gradient(135deg, #00c7a5, #00f1b2);
+  box-shadow: 0 14px 30px rgba(0,199,165,0.25);
+}
+
+.contact-meta h4 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.contact-meta p {
+  margin: 4px 0 10px;
+  color: var(--muted);
+}
+
+.contact-links {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.link-pill {
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(0,0,0,0.06);
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+
+.link-pill:hover {
+  background: rgba(0,0,0,0.12);
+}
+
+.contact-hero {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 18px;
+  align-items: center;
+  margin: 24px 0 16px;
+}
+
+.contact-hero-card {
+  background: linear-gradient(140deg, #f4e8ff, #e8fff7);
+  padding: 22px;
+  border-radius: 26px;
+  box-shadow: var(--shadow);
+}
+
+.contact-gallery {
+  display: grid;
+  gap: 14px;
+  margin: 10px 0 40px;
+}
+
+.contact-large {
+  grid-template-columns: auto 1fr;
+  padding: 22px;
+  border-radius: 22px;
+}
+
+.contact-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.role-tag {
+  padding: 6px 10px;
+  border-radius: 12px;
+  background: rgba(0,0,0,0.08);
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.contact-large h3 { margin: 4px 0; }
+
+.login-options {
+  gap: 12px;
+}
+
+.login-options .full {
+  width: 100%;
+  justify-content: center;
+}
+
+.tg-wrap {
+  display: grid;
+  gap: 6px;
+}
+
+.tg-hint {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.pending-section {
+  margin: 32px 0 16px;
+}
+
+@media (max-width: 960px) {
+  .contact-hero { grid-template-columns: 1fr; }
+  .contact-large { grid-template-columns: auto 1fr; }
+}
+
+@media (max-width: 640px) {
+  .contact-large { grid-template-columns: 1fr; }
 }
 
 .toast {

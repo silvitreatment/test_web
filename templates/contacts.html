@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Контакты - База знаний{% endblock %}
+{% block content %}
+  <section class="contact-hero">
+    <div>
+      <p class="eyebrow">Команда кружка</p>
+      <h1>Те, кто двигает базу знаний</h1>
+      <p class="lead">Преподаватели, менторы и ребята, которые помогают развивать материалы. Напиши им, если хочешь присоединиться или предложить идею.</p>
+    </div>
+    <div class="contact-hero-card">
+      <p class="hero-label">Всегда на связи</p>
+      <h3>Поддержка участников</h3>
+      <p class="hero-card-text">Есть вопросы по материалам или встречам? Напиши в чат или напрямую тому, кто ближе к теме.</p>
+    </div>
+  </section>
+
+  <section class="contact-gallery">
+    {% for person in contacts %}
+      <article class="contact-card contact-large">
+        <div class="avatar {% if loop.index is even %}alt{% endif %}">{{ person.initials }}</div>
+        <div class="contact-meta">
+          <div class="contact-head">
+            <h3>{{ person.name }}</h3>
+            <span class="role-tag">{{ person.role }}</span>
+          </div>
+          <p>{{ person.about }}</p>
+          <div class="contact-links">
+            {% if person.telegram %}<a class="link-pill" href="{{ person.telegram }}" target="_blank" rel="noopener">Telegram</a>{% endif %}
+            {% if person.email %}<a class="link-pill" href="mailto:{{ person.email }}">Почта</a>{% endif %}
+          </div>
+        </div>
+      </article>
+    {% endfor %}
+  </section>
+{% endblock %}

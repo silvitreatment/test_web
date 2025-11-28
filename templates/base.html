@@ -29,14 +29,16 @@
       <a href="{{ url_for('index') }}#articles">Статьи</a>
       <a href="{{ url_for('index') }}#about">О проекте</a>
       <a href="{{ url_for('index') }}#actions">Действия</a>
-      <a href="{{ url_for('index') }}#contacts">Контакты</a>
+      <a href="{{ url_for('contacts') }}">Контакты</a>
     </nav>
     <div class="nav-actions">
-      {% if session.get('logged_in') %}
+      {% if current_user %}
         <a class="chip" href="{{ url_for('new_article') }}">Добавить статью</a>
+        <span class="role-pill">{{ current_user.name or 'Пользователь' }} · {{ current_user.role }}</span>
         <a class="pill dark" href="{{ url_for('logout') }}">Выйти</a>
       {% else %}
         <a class="pill dark" href="{{ url_for('login') }}">Войти</a>
+        <a class="pill outline" href="{{ url_for('register') }}">Регистрация</a>
       {% endif %}
     </div>
   </header>

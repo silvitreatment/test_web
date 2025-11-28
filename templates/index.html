@@ -23,7 +23,7 @@
     <div class="hero-card">
       <p class="hero-label">Стажировка мышления</p>
       <h3>Прыжок в глубину знаний</h3>
-      <p class="hero-card-text">В каждой статье — практический опыт, который помогает готовиться к олимпиадам и интервью.</p>
+      <p class="hero-card-text">В каждой статье опыт, который помогает готовиться к олимпиадам и интервью.</p>
       <div class="hero-badge">
         <span>⚡</span>
         <span>Вдохновляем делать больше</span>
@@ -43,11 +43,15 @@
         <article class="card feature-card">
           <div class="card-head">
             <span class="card-pill">Выделенное</span>
+            <div class="status-pills">
+              <span class="status-badge {{ 'published' if featured.status == 'published' else 'pending' }}">{{ featured.status }}</span>
+              {% if featured.author_name %}<span class="status-badge muted">{{ featured.author_name }}</span>{% endif %}
+            </div>
             <a class="card-link" href="{{ url_for('show_article', article_id=featured.id) }}">Читать</a>
           </div>
           <h3>{{ featured.title }}</h3>
           <p class="card-text">{{ featured.content[:220] ~ ('…' if featured.content|length > 220 else '') }}</p>
-          {% if session.get('logged_in') %}
+          {% if current_user and current_user.role in ['moderator','admin'] %}
             <div class="card-actions">
               <a href="{{ url_for('edit_article', article_id=featured.id) }}">Редактировать</a>
             </div>
@@ -59,10 +63,14 @@
             <article class="card article-card">
               <div class="card-head">
                 <h4>{{ article.title }}</h4>
+                <div class="status-pills">
+                  <span class="status-badge {{ 'published' if article.status == 'published' else 'pending' }}">{{ article.status }}</span>
+                  {% if article.author_name %}<span class="status-badge muted">{{ article.author_name }}</span>{% endif %}
+                </div>
                 <a class="icon-btn" href="{{ url_for('show_article', article_id=article.id) }}">↗</a>
               </div>
               <p class="card-text">{{ article.content[:140] ~ ('…' if article.content|length > 140 else '') }}</p>
-              {% if session.get('logged_in') %}
+              {% if current_user and current_user.role in ['moderator','admin'] %}
                 <div class="card-actions">
                   <a href="{{ url_for('edit_article', article_id=article.id) }}">Редактировать</a>
                 </div>
@@ -74,7 +82,7 @@
     {% else %}
       <div class="empty-state">
         <p>В базе знаний пока нет материалов.</p>
-        {% if session.get('logged_in') %}
+        {% if current_user %}
           <a class="pill primary" href="{{ url_for('new_article') }}">Создать первую статью</a>
         {% else %}
           <a class="pill primary" href="{{ url_for('login') }}">Войти и добавить</a>
@@ -99,14 +107,90 @@
       <p class="eyebrow">Давай создадим новое</p>
       <h3>Хочу к вам</h3>
     </div>
-    {% if session.get('logged_in') %}
+    {% if current_user %}
       <a class="pill primary" href="{{ url_for('new_article') }}">Добавить статью</a>
     {% else %}
       <a class="pill primary" href="{{ url_for('login') }}">Войти</a>
     {% endif %}
   </section>
 
-  <section id="contacts" class="footer-note">
-    <p>Задай вопрос в чате кружка или пиши на почту организаторам.</p>
+  <section id="contacts" class="contacts-section">
+    <div class="section-heading">
+      <h2>Контакты</h2>
+      <p>К кому обращаться за материалами, вопросами и идеями по развитию кружка.</p>
+    </div>
+    <div class="people-grid">
+      <article class="contact-card">
+        <div class="avatar">НК</div>
+        <div class="contact-meta">
+          <h4>Даниил Плотников</h4>
+          <p>Преподаватель кружка, читает лекции, проводит контесты</p>
+          <div class="contact-links">
+            <a class="link-pill" href="https/t.me/PlotDaniil">Telegram</a>
+            <a class="link-pill" href="mailto:noadded@gmail.com">Почта</a>
+          </div>
+        </div>
+      </article>
+      <article class="contact-card">
+        <div class="avatar alt">ЕМ</div>
+        <div class="contact-meta">
+          <h4>Иван Закарлюка</h4>
+          <p>Преподаватель кружка, читает лекции, проводит контесты</p>
+          <div class="contact-links">
+            <a class="link-pill" href="https/t.me/kamenkremen">Telegram</a>
+            <a class="link-pill" href="mailto:noadded@gmail.com">Почта</a>
+          </div>
+        </div>
+      </article>
+      <article class="contact-card">
+        <div class="avatar">АС</div>
+        <div class="contact-meta">
+          <h4>Алексей С.</h4>
+          <p>Разборы задач и менторство, отвечает за олимпиадные темы.</p>
+          <div class="contact-links">
+            <a class="link-pill" href="#">Telegram</a>
+            <a class="link-pill" href="mailto:alex@example.com">Почта</a>
+          </div>
+        </div>
+      </article>
+      <article class="contact-card">
+        <div class="avatar alt">ВД</div>
+        <div class="contact-meta">
+          <h4>Влада Д.</h4>
+          <p>Контент и дизайн, поддерживает визуал и обновляет базу знаний.</p>
+          <div class="contact-links">
+            <a class="link-pill" href="#">Telegram</a>
+            <a class="link-pill" href="mailto:vlad@example.com">Почта</a>
+          </div>
+        </div>
+      </article>
+    </div>
   </section>
+
+  {% if current_user and current_user.role in ['moderator','admin'] and pending_articles %}
+    <section class="pending-section">
+      <div class="section-heading">
+        <h2>На модерации</h2>
+        <p>Черновики и предложения от участников.</p>
+      </div>
+      <div class="card-column">
+        {% for article in pending_articles %}
+          <article class="card article-card">
+            <div class="card-head">
+              <h4>{{ article.title }}</h4>
+              <span class="status-badge pending">pending</span>
+            </div>
+            {% if article.author_name %}<p class="card-text"><strong>{{ article.author_name }}</strong></p>{% endif %}
+            <p class="card-text">{{ article.content[:140] ~ ('…' if article.content|length > 140 else '') }}</p>
+            <div class="card-actions">
+              <a class="pill outline" href="{{ url_for('edit_article', article_id=article.id) }}">Редактировать</a>
+              <form action="{{ url_for('publish_article', article_id=article.id) }}" method="post">
+                <button class="pill primary" type="submit">Опубликовать</button>
+              </form>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
 {% endblock %}

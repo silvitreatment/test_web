@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Регистрация{% endblock %}
+{% block content %}
+  <section class="form-wrap">
+    <div class="section-heading">
+      <h2>Регистрация</h2>
+      <p>Создайте учётную запись, чтобы предлагать статьи. Роль — пользователь, модераторы/админы назначаются вручную.</p>
+    </div>
+    {% if error %}
+      <div class="toast error"><strong>Ошибка:</strong> {{ error }}</div>
+    {% endif %}
+    <form class="card form-card login-options" action="{{ url_for('register') }}" method="post">
+      <label>Имя пользователя
+        <input type="text" name="username" placeholder="логин" required>
+      </label>
+      <label>Отображаемое имя
+        <input type="text" name="name" placeholder="как вас назвать">
+      </label>
+      <label>Пароль
+        <input type="password" name="password" placeholder="••••••" required>
+      </label>
+      <label>Повтор пароля
+        <input type="password" name="confirm" placeholder="••••••" required>
+      </label>
+      <button class="pill primary full" type="submit">Зарегистрироваться</button>
+      <div class="card-actions">
+        <a class="pill outline" href="{{ url_for('login') }}">Уже есть аккаунт</a>
+        <a class="pill outline" href="{{ url_for('index') }}">На главную</a>
+      </div>
+    </form>
+  </section>
+{% endblock %}

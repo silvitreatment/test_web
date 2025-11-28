@@ -5,17 +5,28 @@
     <article class="card detail-card">
       <div class="card-head">
         <span class="card-pill">Статья</span>
+        <div class="status-pills">
+          <span class="status-badge {{ 'published' if article.status == 'published' else 'pending' }}">{{ article.status }}</span>
+          {% if article.author_name %}<span class="status-badge muted">Автор: {{ article.author_name }}</span>{% endif %}
+        </div>
       </div>
       <h2>{{ article.title }}</h2>
       <div class="article-body">{{ article.content|safe }}</div>
-      {% if session.get('logged_in') %}
-        <div class="card-actions">
+      <div class="card-actions">
+        {% if current_user and current_user.role in ['moderator', 'admin'] %}
+          {% if article.status != 'published' %}
+            <form action="{{ url_for('publish_article', article_id=article.id) }}" method="post">
+              <button class="pill primary" type="submit">Опубликовать</button>
+            </form>
+          {% endif %}
           <a class="pill outline" href="{{ url_for('edit_article', article_id=article.id) }}">Редактировать</a>
+        {% endif %}
+        {% if current_user and current_user.role == 'admin' %}
           <form action="{{ url_for('delete_article', article_id=article.id) }}" method="post" onsubmit="return confirm('Удалить статью?');">
             <button class="pill danger" type="submit">Удалить</button>
           </form>
-        </div>
-      {% endif %}
+        {% endif %}
+      </div>
     </article>
   {% else %}
     <div class="empty-state">

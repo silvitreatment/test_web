@@ -4,22 +4,25 @@
   <section class="form-wrap">
     <div class="section-heading">
       <h2>Войти в базу</h2>
-      <p>Чтобы редактировать и добавлять материалы, войдите под админ-аккаунтом.</p>
+      <p>Выберите способ авторизации: логин/пароль для админов или соцсети. Роли назначаются по спискам админов/модераторов.</p>
     </div>
     {% if error %}
       <div class="toast error"><strong>Ошибка:</strong> {{ error }}</div>
     {% endif %}
-    <form class="card form-card" action="{{ url_for('login') }}" method="post">
+    <form class="card form-card login-options" action="{{ url_for('login') }}" method="post">
+      <input type="hidden" name="login_method" value="password">
       <label>Имя пользователя
         <input type="text" name="username" placeholder="admin">
       </label>
       <label>Пароль
         <input type="password" name="password" placeholder="••••••••">
       </label>
-      <div class="card-actions">
-        <button class="pill primary" type="submit">Войти</button>
-        <a class="pill outline" href="{{ url_for('index') }}">Назад</a>
-      </div>
+      <button class="pill primary full" type="submit">Войти по паролю</button>
     </form>
+
+    <div class="card-actions">
+      <a class="pill outline" href="{{ url_for('register') }}">Регистрация</a>
+      <a class="pill outline" href="{{ url_for('index') }}">Назад</a>
+    </div>
   </section>
 {% endblock %}
