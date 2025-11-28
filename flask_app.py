@@ -5,12 +5,15 @@ from flask import flash
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///knowledge.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  
+app.config['SECRET_KEY'] = 'SOME_SECRET_KEY'  
+app.config['ADMIN_USERNAME'] = 'admin'
+app.config['ADMIN_PASSWORD'] = 'password123'
 
 db = SQLAlchemy(app)
 
 @app.route('/articles/new')
 def new_article():
-    return render_template('new_arcticle.html')
+    return render_template('new_article.html')
 
 @app.route('/articles/<int:article_id>/delete', methods=['POST'])
 def delete_article(article_id):
@@ -60,7 +63,35 @@ def update_article(article_id):
 @app.route('/articles/<int:article_id>')
 def show_article(article_id):
     article = Article.query.get_or_404(article_id)
-    return render_template('article_detail.html', article=True)
+    return render_template('article_detail.html', article=article)
+
+@app.route('/')
+def index():
+    articles = Article.query.order_by(Article.id.desc()).all()  
+    return render_template('index.html', articles=articles)
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    error = None
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        if username != app.config['ADMIN_USERNAME']:
+            error = 'Неверное имя пользователя'
+        elif password != app.config['ADMIN_PASSWORD']:
+            error = 'Неверный пароль'
+        else:
+            session['logged_in'] = True
+            flash('Вы успешно вошли в систему')  
+            return redirect(url_for('index'))
+    return render_template('login.html', error=error)
+
+@app.route('/logout')
+
+def logout():
+    session.pop('logged_in', None)
+    flash('Вы вышли из системы')
+    return redirect(url_for('index'))
 
 class Article(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -70,11 +101,6 @@ class Article(db.Model):
     def __repr__(self):
         return f'<Article {self.id} {self.title}'
     
-@app.route('/')
-def index():
-    articles = Article.query.order_by(Article.id.desc()).all()  
-    return render_template('index.html', articles=articles)
-
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()

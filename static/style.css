@@ -1,0 +1,13 @@
+body { font-family: sans-serif; background: #f4f4f4; margin: 0; padding: 0; }
+header { background: #222; color: #fff; padding: 1em; }
+header h1 { display: inline-block; margin: 0; font-size: 1.5em; }
+header nav { display: inline-block; margin-left: 2em; }
+header nav a { color: #9ecffb; margin-right: 1em; text-decoration: none; }
+header nav a:hover { text-decoration: underline; }
+
+main { padding: 1em 2em; }
+h2 { color: #333; }
+.articles-list li { margin: 0.5em 0; }
+
+.flash { background: #cee5f5; border: 1px solid #aacbe2; padding: 0.5em; margin: 0.5em 0; }
+.error { background: #f0d6d6; padding: 0.5em; }
